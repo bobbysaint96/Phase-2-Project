@@ -3,8 +3,10 @@ package com.bah.mcc.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,26 +29,24 @@ public class CustomerApi {
 	@Autowired
 	CustomersRepository repo;
 
-	ArrayList<Customer> customerList = new ArrayList<Customer>();
 
 	public CustomerApi() {
 
 	}
 
 	@GetMapping
-	public Collection<Customer> getAll() {
-		return customerList;
+	public ResponseEntity<?>getAll() {
+		Iterable<Customer> customers = repo.findAll();
+		return new ResponseEntity<>(customers, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public Customer getById(@PathVariable long id) {
-		Customer ret = null;
-		for (Customer x : customerList) {
-			if (x.getId() == id) {
-				ret = x;
-			}
+	public ResponseEntity<?> getById(@PathVariable long id) {
+		Optional<Customer> customer = repo.findById(id);
+		if (!customer.isPresent()) {
+			return ResponseEntity.badRequest().build();
 		}
-		return ret;
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -64,51 +64,38 @@ public class CustomerApi {
 	@GetMapping("/byname/{username}")
 	public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("username") String username,
 			UriComponentsBuilder uri) {
-		// Workshop: Write an implemenatation to look up a customer by name. Think about
-		// what
-		// your response should be if no customer matches the name the caller is
-		// searching for.
-		// With the data model implemented in CustomersRepository, do you need to handle
-		// more than
-		// one match per request?
-		return null;
+		if (repo.findByName(username) != null) {
+			Customer customer = repo.findByName(username);
+			return new ResponseEntity<>(customer, HttpStatus.OK);
+		}
+		return ResponseEntity.badRequest().build();
 	}
 
 	// lookupCustomerByName POST
 	@PostMapping("/byname")
 	public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
-		// Workshop: Write an implementation to look up a customer by name, using POST
-		// semantics
-		// rather than GET. You should be able to make use of most of your implmentation
-		// for
-		// lookupCustomerByNameGet().
-		return null;
+		if (repo.findByName(username) != null) {
+			Customer customer = repo.findByName(username);
+			return new ResponseEntity<>(customer, HttpStatus.OK);
+		}
+		return ResponseEntity.badRequest().build();
+	
 	}
 
 	@PutMapping("/{customerId}")
 	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer,
 			@PathVariable("customerId") long customerId) {
-		// Workshop: Write an implementation to update or create a new customer with an
-		// HTTP PUT, with the
-		// requestor specifying the customer ID. Are there error conditions to be
-		// handled? How much data
-		// validation should you implement considering that customers are stored in a
-		// CustomersRepository object.
-		return null;
+		if (newCustomer.getId() != customerId || newCustomer.getName() == null || newCustomer.getEmail() == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		newCustomer = repo.save(newCustomer);
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/{customerId}")
 	public ResponseEntity<?> deleteCustomerById(@PathVariable("customerId") long id) {
-		// Implement a method to delete a customer. What is an appropriate response?
-		//
-		// For discussion (do not worry about implementation): What are some ways of
-		// handling
-		// a "delete"? Is it always the right thing from a business point of view to
-		// literally
-		// delete a customer entry? If you did actually delete a customer entry, are
-		// there issues
-		// you could potentially run into later?
-		return null;
+		repo.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 }
