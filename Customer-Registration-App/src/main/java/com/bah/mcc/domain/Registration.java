@@ -1,5 +1,10 @@
-package com.CustomerRegistrationApp.domain;
+package com.bah.mcc.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="REGISTRATIONS")
 public class Registration {
 	long id;
 	long event_id;

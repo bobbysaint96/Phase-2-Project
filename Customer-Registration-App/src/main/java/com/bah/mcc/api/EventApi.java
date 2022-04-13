@@ -1,0 +1,82 @@
+package com.bah.mcc.api;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.bah.mcc.domain.Event;
+import com.bah.mcc.repository.EventRepository;
+
+@RestController
+@RequestMapping("/events")
+public class EventApi {
+	
+	@Autowired
+	EventRepository repo;
+	
+	ArrayList<Event> eventsList = new ArrayList<Event>();
+	
+	public EventApi() {
+		
+		Event one = new Event(1, "Code 1", "Title 1", "Desc 1");
+		Event two = new Event(2, "Code 2", "Title 2", "Desc 2");
+		Event three = new Event(3, "Code 3", "Title 3", "Desc 3");
+		Event four = new Event(4, "Code 4", "Title 4", "Desc 4");
+		Event five = new Event(5, "Code 5", "Title 5", "Desc 5");
+		
+		eventsList.add(one);
+		eventsList.add(two);
+		eventsList.add(three);
+		eventsList.add(four);
+		eventsList.add(five);
+	}
+	
+	@RequestMapping
+	public Collection<Event> getAll() {
+		return eventsList;
+	}
+	
+	@RequestMapping("/{id}")
+	public Event getById(@PathVariable long id) {
+		Event ret = null;
+		for (Event x: eventsList) {
+			if (x.getId() == id) {
+				ret = x;
+			}
+		}
+		return ret;
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
+		//  Workshop:  Implement a method to create a new event in response to a POST message.
+		//  Think about how you ensure that the event is properly formed.
+		return null;
+	}
+
+	@PutMapping("/{eventId}")
+	public ResponseEntity<?> putEvent(
+			@RequestBody Event newEvent,
+			@PathVariable("eventId") long eventId) 
+	{
+		//  Workshop:  Implement a method to update an entitye in response to a PUT message.
+		return null;
+	}	
+	
+	@DeleteMapping("/{eventId}")
+	public ResponseEntity<?> deleteEventById(@PathVariable("eventId") long id) {
+		//  Workshop:  Implement a method to delete an entity. 
+		return null;
+	}	
+	
+}
