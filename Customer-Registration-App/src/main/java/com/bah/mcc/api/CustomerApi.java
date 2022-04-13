@@ -1,5 +1,6 @@
 package com.bah.mcc.api;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.bah.mcc.domain.Customer;
@@ -28,25 +30,15 @@ public class CustomerApi {
 	ArrayList<Customer> customerList = new ArrayList<Customer>();
 
 	public CustomerApi() {
-		Customer one = new Customer(1, "One", "One@bah.com", "1_Password");
-		Customer two = new Customer(2, "Two", "Two@bah.com", "2_Password");
-		Customer three = new Customer(1, "Three", "Three@bah.com", "3_Password");
-		Customer four = new Customer(1, "Four", "Four@bah.com", "4_Password");
-		Customer five = new Customer(1, "Five", "Five@bah.com", "5_Password");
 
-		customerList.add(one);
-		customerList.add(two);
-		customerList.add(three);
-		customerList.add(four);
-		customerList.add(five);
 	}
 
-	@RequestMapping
+	@GetMapping
 	public Collection<Customer> getAll() {
 		return customerList;
 	}
 
-	@RequestMapping("/{id}")
+	@GetMapping("/{id}")
 	public Customer getById(@PathVariable long id) {
 		Customer ret = null;
 		for (Customer x : customerList) {
@@ -59,13 +51,13 @@ public class CustomerApi {
 
 	@PostMapping
 	public ResponseEntity<?> addCustomer(@RequestBody Customer newCustomer, UriComponentsBuilder uri) {
-		// Workshop: Write an implementation that adds a new customer. Your
-		// implementation should check to make sure that the name and email fields are
-		// not null and that no id was passed (it will be auto generated when the record
-		// is inserted. Remember REST semantics - return a reference to the newly
-		// created
-		// entity as a URI.
-		return null;
+		if (newCustomer.getId() != 0 || newCustomer.getName() == null || newCustomer.getEmail() == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		newCustomer = repo.save(newCustomer);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCustomer.getId()).toUri();
+		ResponseEntity<?> response = ResponseEntity.created(location).build();
+		return response;
 	}
 
 	// lookupCustomerByName GET

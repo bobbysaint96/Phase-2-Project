@@ -1,11 +1,16 @@
 package com.bah.mcc.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="REGISTRATIONS")
 public class Registration {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	long id;
 	long event_id;
 	long customer_id;
