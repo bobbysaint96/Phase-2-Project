@@ -1,5 +1,6 @@
 package com.bah.mcc.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	long id;
+	
+	@Column(name="EVENT_CODE")
 	String code;
 	String title;
 	String description;
