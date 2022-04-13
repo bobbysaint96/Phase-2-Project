@@ -1,8 +1,6 @@
 package com.bah.mcc.api;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +27,12 @@ public class CustomerApi {
 	@Autowired
 	CustomersRepository repo;
 
-
 	public CustomerApi() {
 
 	}
 
 	@GetMapping
-	public ResponseEntity<?>getAll() {
+	public ResponseEntity<?> getAll() {
 		Iterable<Customer> customers = repo.findAll();
 		return new ResponseEntity<>(customers, HttpStatus.OK);
 	}
@@ -55,7 +52,8 @@ public class CustomerApi {
 			return ResponseEntity.badRequest().build();
 		}
 		newCustomer = repo.save(newCustomer);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCustomer.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(newCustomer.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 	}
@@ -79,7 +77,7 @@ public class CustomerApi {
 			return new ResponseEntity<>(customer, HttpStatus.OK);
 		}
 		return ResponseEntity.badRequest().build();
-	
+
 	}
 
 	@PutMapping("/{customerId}")
