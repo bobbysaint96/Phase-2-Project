@@ -7,5 +7,5 @@ import com.bah.mcc.domain.Customer;
 
 @Repository
 public interface CustomersRepository extends CrudRepository<Customer, Long> {
-
+	Customer findByName(String name);
 }
