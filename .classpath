@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="Customer-Registration-App/src/main/java"/>
+	<classpathentry kind="src" path="Customer-Registration-App/src/main/DataServiceApp"/>
 	<classpathentry kind="src" path="Customer-Registration-App/src/test/java"/>
 	<classpathentry kind="lib" path="Customer-Registration-App/gradle/wrapper/gradle-wrapper.jar"/>
 	<classpathentry kind="output" path="bin"/>
