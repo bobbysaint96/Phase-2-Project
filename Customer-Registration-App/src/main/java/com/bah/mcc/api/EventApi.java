@@ -49,7 +49,7 @@ public class EventApi {
 		return repo.findAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{eventId}")
 	public Optional<Event> getById(@PathVariable("eventId") long id) {
 		return repo.findById(id);
 	}
