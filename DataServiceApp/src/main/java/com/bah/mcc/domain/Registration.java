@@ -1,5 +1,7 @@
 package com.bah.mcc.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,16 +14,16 @@ public class Registration {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	long id;
-	long event_id;
-	long customer_id;
-	String registration_date;
+	String event_id;
+	String customer_id;
+	Date registration_date;
 	String notes;
 	
 	public Registration() {
 		
 	}
 	
-	public Registration(long id, long event_id, long customer_id, String registration_date, String notes) {
+	public Registration(long id, String event_id, String customer_id, Date registration_date, String notes) {
 		this.id = id;
 		this.event_id = event_id;
 		this.customer_id = customer_id;
@@ -37,27 +39,27 @@ public class Registration {
 		this.id = id;
 	}
 
-	public long getEvent_id() {
+	public String getEvent_id() {
 		return event_id;
 	}
 
-	public void setEvent_id(long event_id) {
+	public void setEvent_id(String event_id) {
 		this.event_id = event_id;
 	}
 
-	public long getCustomer_id() {
+	public String getCustomer_id() {
 		return customer_id;
 	}
 
-	public void setCustomer_id(long customer_id) {
+	public void setCustomer_id(String customer_id) {
 		this.customer_id = customer_id;
 	}
 
-	public String getRegistration_date() {
+	public Date getRegistration_date() {
 		return registration_date;
 	}
 
-	public void setRegistration_date(String registration_date) {
+	public void setRegistration_date(Date registration_date) {
 		this.registration_date = registration_date;
 	}
 

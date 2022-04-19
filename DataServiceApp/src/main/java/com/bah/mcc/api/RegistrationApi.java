@@ -40,16 +40,10 @@ public class RegistrationApi {
 		return repo.findById(id);
 	}
 
-	long id;
-	long event_id;
-	long customer_id;
-	String registration_date;
-	String notes;
-
 	@PostMapping
 	public ResponseEntity<?> addRegistration(@RequestBody Registration newRegistration, UriComponentsBuilder uri) {
-		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() != 0 || newRegistration.getCustomer_id() != 0
-				|| newRegistration.getRegistration_date() == null || newRegistration.getNotes() != null) {
+		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() == null || newRegistration.getCustomer_id() == null
+				|| newRegistration.getRegistration_date() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = repo.save(newRegistration);
@@ -62,8 +56,8 @@ public class RegistrationApi {
 	@PutMapping("/{eventId}")
 	public ResponseEntity<?> putRegistration(@RequestBody Registration newRegistration,
 			@PathVariable("eventId") long eventId) {
-		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() != 0 || newRegistration.getCustomer_id() != 0
-				|| newRegistration.getRegistration_date() == null || newRegistration.getNotes() != null) {
+		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() == null || newRegistration.getCustomer_id() == null
+				|| newRegistration.getRegistration_date() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = repo.save(newRegistration);
