@@ -56,8 +56,7 @@ public class RegistrationApi {
 	@PutMapping("/{eventId}")
 	public ResponseEntity<?> putRegistration(@RequestBody Registration newRegistration,
 			@PathVariable("eventId") long eventId) {
-		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() == null || newRegistration.getCustomer_id() == null
-				|| newRegistration.getRegistration_date() == null) {
+		if (newRegistration.getEvent_id() == null || newRegistration.getCustomer_id() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = repo.save(newRegistration);
